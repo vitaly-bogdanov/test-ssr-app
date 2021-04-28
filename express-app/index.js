@@ -1,10 +1,14 @@
 'use strict';
 
-import dotenv from 'dotenv'; dotenv.config();
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { cpus } from 'os';
 import cluster from 'cluster';
 import app from './config/app.js';
 import db from './config/db.js';
+
+// import { PORT } from './config/vars.js';
 
 if (cluster.isMaster) {
   const cpuCount = cpus().length;

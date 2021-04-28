@@ -3,20 +3,20 @@ import ApiError from '../error/ApiError.js';
 
 export default {
   index: async (request, response) => {
+    console.log(`PORT: ${process.env.PORT}`);
+    console.log(`DB_NAME: ${process.env.DB_NAME}`);
     const posts = await Post.findAll();
     response.status(200).json(posts);
   },
 
   view: async (request, response, next) => {
     const { id } = request.params;
-    const post = await Post.findOne({ id });
+    const post = await Post.findOne({ where: { id } });
     response.status(200).json(post);
   },
 
-  create: async (request, response, next) => {
+  create: async (request, response) => {
     const { head, body } = request.body;
-    if (!head) return next(ApiError.badRequest('пустое поле head'));
-    if (!body) return next(ApiError.badRequest('пустое поле body'));
     const post = await Post.create({ head, body });
     response.status(201).json(post);
   }

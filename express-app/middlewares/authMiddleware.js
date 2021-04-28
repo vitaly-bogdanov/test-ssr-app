@@ -4,11 +4,12 @@ import ApiError from '../error/ApiError.js';
 export default (request, response, next) => {
   try {
     const token = request.headers.authorization.split(' ')[1];
-    if (!token) return next(ApiError.unauthorized('не авторизован'));
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    if (!token) return next(ApiError.forbidden('не авторизован 1'));
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     request.user = decoded;
     next();
   } catch (error) {
-    next(ApiError.badRequest('не авторизован'));
+    console.log(error);
+    next(ApiError.badRequest('jwt невалиден'));
   }
 }
